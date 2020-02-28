@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebDp.Models.Book>
+﻿@model WebDp.Models.ViewProperty
 
 @{
     ViewData["Title"] = "Index";
@@ -6,60 +6,81 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-info" asp-action="Create">Create New Book</a>
 </p>
+
+<form asp-controller="Books" asp-action="Index" method="get">
+    <p>
+        <div class="form-group">
+            <label for="sel">Find By Category</label>
+            <select asp-for="BookCategory" asp-items="Model.Categories" class="form-control" id="sel">
+                <option value="All"></option>
+            </select>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="tb">Find by Title</label>
+            <input type="text" name="searchstring" class="form-control" id="tb" />
+            <br />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="search" class="btn btn-primary" />
+        </div>
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.BTitle)
+                @Html.DisplayNameFor(model => model.Books[0].BTitle)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BType)
+                @Html.DisplayNameFor(model => model.Books[0].BType)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BPrice)
+                @Html.DisplayNameFor(model => model.Books[0].BPrice)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BAuthor)
+                @Html.DisplayNameFor(model => model.Books[0].BAuthor)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BPublisher)
+                @Html.DisplayNameFor(model => model.Books[0].BPublisher)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BRelease)
+                @Html.DisplayNameFor(model => model.Books[0].BRelease)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.BTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BAuthor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BPublisher)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BRelease)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Books)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BAuthor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BPublisher)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BRelease)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.BId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.BId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.BId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

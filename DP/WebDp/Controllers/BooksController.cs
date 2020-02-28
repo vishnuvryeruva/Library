@@ -20,9 +20,29 @@ namespace WebDp.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string bookcategory, string searchstring)
         {
-            return View(await _context.Books.ToListAsync());
+
+            IQueryable<string> categoryquery = from b in _context.Books
+                                               orderby b.BType
+                                               select b.BType;
+
+            var book = from b in _context.Books select b;
+            if (!String.IsNullOrEmpty(searchstring))
+            {
+                book = book.Where(b => b.BTitle.Contains(searchstring));
+            }
+            if (!String.IsNullOrEmpty(bookcategory))
+            {
+                book = book.Where(x => x.BType.Contains(bookcategory));
+            }
+
+            var bookcatvm = new ViewProperty
+            {
+                Categories = new SelectList(await categoryquery.Distinct().ToListAsync()),
+                Books = await book.ToListAsync()
+            };
+            return View(bookcatvm);
         }
 
         // GET: Books/Details/5
